@@ -1,20 +1,14 @@
 package com.example.movietest.adapter
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.os.AsyncTask
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.movietest.R
 import com.example.movietest.databinding.MainItemBinding
 import com.example.movietest.model.Results
-import java.io.InputStream
-import java.net.URL
+import com.example.movietest.util.DownloadImageTask
 import java.util.*
 
 
@@ -25,7 +19,7 @@ class MovieAdapter(
     RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     interface OnItemClick {
-        fun onClick(movie: Results?)
+        fun onClick(movie: Results)
     }
 
     override fun onCreateViewHolder(
@@ -71,24 +65,5 @@ class MovieAdapter(
     inner class MovieViewHolder(val itemBinding: MainItemBinding) :
         ViewHolder(itemBinding.root)
 
-    class DownloadImageTask(var bmImage: ImageView) :
-        AsyncTask<String?, Void?, Bitmap?>() {
-        override fun doInBackground(vararg params: String?): Bitmap? {
-            val urldisplay = params[0]
-            var mIcon11: Bitmap? = null
-            try {
-                val inputStream: InputStream = URL(urldisplay).openStream()
-                mIcon11 = BitmapFactory.decodeStream(inputStream)
-            } catch (e: Exception) {
-                Log.e("Error", "error")
-                e.printStackTrace()
-            }
-            return mIcon11
-        }
 
-        override fun onPostExecute(result: Bitmap?) {
-            bmImage.setImageBitmap(result)
-        }
-
-    }
 }
