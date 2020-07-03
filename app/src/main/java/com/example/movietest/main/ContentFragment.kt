@@ -37,19 +37,21 @@ class ContentFragment : Fragment() {
         return binding.root
     }
 
-    fun getMovieData(id: Int) {
+    private fun getMovieData(id: Int) {
         mainViewModel.getOverview(id).observe(this@ContentFragment, Observer { overview ->
             if (overview != null) {
                 val url = "https://image.tmdb.org/t/p/w500" + overview.poster_path
                 DownloadImageTask(binding.image)
                     .execute(url)
-                binding.title.text = overview.original_title
+                binding.apply {
+                    title.text = overview.original_title
+                    date.text = overview.release_date
+                }
                 binding.overview.text = overview.overview
                 val genres: List<String> = overview.genres.map { it.name }
                 val directors: List<String> = overview.production_companies.map { it.name }
                 binding.genres.text = genres.joinToString(separator = ", ")
                 binding.directors.text = directors.joinToString(separator = ", ")
-                binding.date.text = overview.release_date
 
             }
         })
