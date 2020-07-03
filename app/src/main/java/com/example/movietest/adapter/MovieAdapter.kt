@@ -57,7 +57,13 @@ class MovieAdapter(
         return movies.size
     }
 
+    fun addMovies(movie: ArrayList<Results>?) {
+        movie?.let { movies.addAll(it) }
+        notifyDataSetChanged()
+    }
+
     fun setMovies(movie: ArrayList<Results>?) {
+        movies.clear()
         movie?.let { movies.addAll(it) }
         notifyDataSetChanged()
     }
@@ -71,8 +77,8 @@ class MovieAdapter(
             val urldisplay = params[0]
             var mIcon11: Bitmap? = null
             try {
-                val `in`: InputStream = URL(urldisplay).openStream()
-                mIcon11 = BitmapFactory.decodeStream(`in`)
+                val inputStream: InputStream = URL(urldisplay).openStream()
+                mIcon11 = BitmapFactory.decodeStream(inputStream)
             } catch (e: Exception) {
                 Log.e("Error", "error")
                 e.printStackTrace()
